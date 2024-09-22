@@ -1,21 +1,26 @@
 package sbs.com.java.board;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
-
-/*
-Todo List
-- [o] /usr/article/detail 명령어 처리
-- [] /usr/article/detail 입력시 가장 최근 게시물 노출
-*/
+import java.util.stream.IntStream;
 
 public class Main {
+  static void makeTestData(List<Article> articles) {
+    IntStream.rangeClosed(1, 3)
+        .forEach(i -> articles.add(new Article(i, "제목" + i, "내용" + i)));
+  }
+
   public static void main(String[] args) {
     Scanner sc = new Scanner(System.in);
     int lastArticleId = 0;
     Article lastArticle = null;
 
-    System.out.println("== 텍스트 게시판 ==");
+    List<Article> articles = new ArrayList<>();
 
+    makeTestData(articles);
+
+    System.out.println("== 텍스트 게시판 ==");
     System.out.println("== 게시판을 시작합니다. ==");
 
     while (true) {
@@ -35,8 +40,28 @@ public class Main {
         Article article = new Article(id, subject, content);
         lastArticle = article;
 
+        articles.add(article);
+
         System.out.println("등록 된 게시물 객체 : " + article);
         System.out.printf("%d번 게시물이 등록되었습니다.\n", article.id);
+      }
+      else if(cmd.equals("/usr/article/list")) {
+        if(articles.isEmpty()) {
+          System.out.println("게시물이 존재하지 않습니다.");
+          continue;
+        }
+
+        System.out.println("== 게시물 리스트 ==");
+
+        /*
+        for(int i = 0; i < articles.size(); i++) {
+          Article article = articles.get(i);
+          System.out.printf("%d | %s\n", article.id, article.subject);
+        }
+        */
+
+        articles.forEach(article -> System.out.printf("%d | %s\n", article.id, article.subject));
+
       }
       else if(cmd.equals("/usr/article/detail")) {
         Article article = lastArticle;
