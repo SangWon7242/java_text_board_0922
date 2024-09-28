@@ -2,19 +2,18 @@ import java.util.*;
 
 public class Main {
   public static void main(String[] args) {
-    Map<String, String> params = Util.getParamsFromUrl("/usr/article/write?id=20&subject=제목1&content=내용1&writerName=김철수&hitCount=20");
+    String url = "/usr/article/write?id=20&subject=제목1&content=내용1&writerName=김철수&hitCount=20";
+    Map<String, String> params = Util.getParamsFromUrl(url);
     System.out.println(params);
-    System.out.println(params.get("id")); // 20
-    System.out.println(params.get("subject")); // 제목1
-    System.out.println(params.get("content")); // 내용1
-    System.out.println(params.get("writerName")); // 김철수
-    System.out.println(params.get("hitCount")); // 20
+
+    String urlPath = Util.getUrlPathFromUrl(url);
+    System.out.println(urlPath);
   }
 }
 
 class Util {
   static Map<String, String> getParamsFromUrl(String url) {
-    Map<String, String> params = new HashMap<>();
+    Map<String, String> params = new LinkedHashMap<>();
     String[] urlBits = url.split("\\?", 2);
 
     if(urlBits.length == 1) {
@@ -34,5 +33,9 @@ class Util {
     }
 
     return params;
+  }
+
+  static String getUrlPathFromUrl(String url) {
+    return url.split("\\?", 2)[0];
   }
 }
