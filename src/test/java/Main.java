@@ -1,21 +1,14 @@
+import java.util.Arrays;
+
 public class Main {
   public static void main(String[] args) {
-    Article article = new Article();
-    article.id = 1;
-    article.subject = "제목1";
-    article.content = "내용1";
+    String queryString = "a=1&b=2&c=3";
+    // a=1, b=2, c=3
+    String[] queryStringBits = queryString.split("&");
+    System.out.println(Arrays.toString(queryStringBits));
 
-    System.out.println(article);
-  }
-}
-
-class Article {
-  int id;
-  String subject;
-  String content;
-
-  @Override
-  public String toString() {
-    return "{id : %d, subject : %s, content : %s}".formatted(id, subject, content);
+    for(String bit : queryStringBits) {
+      System.out.println(bit);
+    }
   }
 }
