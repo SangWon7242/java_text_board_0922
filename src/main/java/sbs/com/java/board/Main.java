@@ -13,12 +13,10 @@ public class Main {
 
   public static void main(String[] args) {
     Scanner sc = new Scanner(System.in);
-    Article lastArticle = null;
     List<Article> articles = new ArrayList<>();
 
     makeTestData(articles);
 
-    // 0, 1, 2
     int lastArticleId = articles.get(articles.size() - 1).id;
 
     System.out.println("== 텍스트 게시판 ==");
@@ -39,7 +37,6 @@ public class Main {
         int id = ++lastArticleId;
 
         Article article = new Article(id, subject, content);
-        lastArticle = article;
 
         articles.add(article);
 
@@ -61,7 +58,7 @@ public class Main {
 
       }
       else if(cmd.equals("/usr/article/detail")) {
-        Article article = lastArticle;
+        Article article = articles.get(articles.size() - 1);
 
         if(article == null) {
           System.out.println("게시물이 존재하지 않습니다.");
