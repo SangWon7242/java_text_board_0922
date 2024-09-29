@@ -1,8 +1,6 @@
 package sbs.com.java.board;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.IntStream;
 
 public class Main {
@@ -26,7 +24,9 @@ public class Main {
       System.out.print("명령어 ) ");
       String cmd = sc.nextLine();
 
-      if(cmd.equals("/usr/article/write")) {
+      Rq rq = new Rq(cmd);
+
+      if(rq.getUrlPath().equals("/usr/article/write")) {
         System.out.println("== 게시물 작성 ==");
         System.out.print("제목 : ");
         String subject = sc.nextLine();
@@ -43,7 +43,7 @@ public class Main {
         System.out.println("등록 된 게시물 객체 : " + article);
         System.out.printf("%d번 게시물이 등록되었습니다.\n", article.id);
       }
-      else if(cmd.equals("/usr/article/list")) {
+      else if(rq.getUrlPath().equals("/usr/article/list")) {
         if(articles.isEmpty()) {
           System.out.println("게시물이 존재하지 않습니다.");
           continue;
@@ -57,7 +57,7 @@ public class Main {
         }
 
       }
-      else if(cmd.equals("/usr/article/detail")) {
+      else if(rq.getUrlPath().equals("/usr/article/detail")) {
         Article article = articles.get(articles.size() - 1);
 
         if(article == null) {
@@ -70,7 +70,7 @@ public class Main {
         System.out.printf("제목 : %s\n", article.subject);
         System.out.printf("내용 : %s\n", article.content);
       }
-      else if(cmd.equals("exit")) {
+      else if(rq.getUrlPath().equals("exit")) {
         System.out.println("== 게시판을 종료합니다. ==");
         break;
       }
@@ -97,5 +97,54 @@ class Article {
   @Override
   public String toString() {
     return "{id : %d, subject : \"%s\", content : \"%s\"}".formatted(id, subject, content);
+  }
+}
+
+class Rq {
+  String url;
+  Map<String, String> params;
+  String urlPath;
+
+  Rq(String url) {
+    this.url = url;
+    this.params = Util.getParamsFromUrl(url);
+    this.urlPath = Util.getUrlPathFromUrl(url);
+  }
+
+  public Map<String, String> getParams() {
+    return params;
+  }
+
+  public String getUrlPath() {
+    return urlPath;
+  }
+}
+
+class Util {
+  static Map<String, String> getParamsFromUrl(String url) {
+    Map<String, String> params = new LinkedHashMap<>();
+    String[] urlBits = url.split("\\?", 2);
+
+    if(urlBits.length == 1) {
+      return params;
+    }
+
+    String queryString = urlBits[1];
+
+    for(String bit : queryString.split("&")) {
+      String[] bits = bit.split("=");
+
+      if(bits.length == 1) {
+        continue;
+      }
+
+      params.put(bits[0], bits[1]);
+    }
+
+    return params;
+  }
+
+  static String getUrlPathFromUrl(String url) {
+    return url.split("\\?", 2)[0];
   }
 }
