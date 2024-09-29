@@ -22,28 +22,21 @@ class Rq {
 
   Rq(String url) {
     this.url = url;
+    this.params = Util.getParamsFromUrl(url);
+    this.urlPath = Util.getUrlPathFromUrl(url);
   }
 
   public Map<String, String> getParams() {
-    if(params == null) {
-      params = Util.getParamsFromUrl(url);
-    }
-
     return params;
   }
 
   public String getUrlPath() {
-    if(urlPath == null) {
-      urlPath = Util.getUrlPathFromUrl(url);
-    }
-
     return urlPath;
   }
 }
 
 class Util {
   static Map<String, String> getParamsFromUrl(String url) {
-    System.out.println("getParamsFromUrl 실행");
     Map<String, String> params = new LinkedHashMap<>();
     String[] urlBits = url.split("\\?", 2);
 
@@ -67,7 +60,6 @@ class Util {
   }
 
   static String getUrlPathFromUrl(String url) {
-    System.out.println("getUrlPathFromUrl 실행");
     return url.split("\\?", 2)[0];
   }
 }
