@@ -26,7 +26,7 @@ public class Main {
 
       Rq rq = new Rq(cmd);
 
-      if(rq.getUrlPath().equals("/usr/article/write")) {
+      if (rq.getUrlPath().equals("/usr/article/write")) {
         System.out.println("== 게시물 작성 ==");
         System.out.print("제목 : ");
         String subject = sc.nextLine();
@@ -42,30 +42,49 @@ public class Main {
 
         System.out.println("등록 된 게시물 객체 : " + article);
         System.out.printf("%d번 게시물이 등록되었습니다.\n", article.id);
-      }
-      else if(rq.getUrlPath().equals("/usr/article/list")) {
-        if(articles.isEmpty()) {
-          System.out.println("게시물이 존재하지 않습니다.");
-          continue;
-        }
-
-        System.out.println("== 게시물 리스트 ==");
-
-        for(int i = articles.size() - 1; i >= 0; i--) {
-          Article article = articles.get(i);
-          System.out.printf("%d | %s\n", article.id, article.subject);
-        }
-
-      }
-      else if(rq.getUrlPath().equals("/usr/article/detail")) {
-        if(articles.isEmpty()) {
+      } else if (rq.getUrlPath().equals("/usr/article/list")) {
+        if (articles.isEmpty()) {
           System.out.println("게시물이 존재하지 않습니다.");
           continue;
         }
 
         Map<String, String> params = rq.getParams();
 
-        if(!params.containsKey("id")) {
+        boolean orderByIdDesc = true;
+
+        if (params.containsKey("orderBy") && params.get("orderBy").equals("idAsc")) {
+          orderByIdDesc = false;
+        }
+
+        if (orderByIdDesc) {
+          for (int i = articles.size() - 1; i >= 0; i--) {
+            Article article = articles.get(i);
+            System.out.printf("%d | %s\n", article.id, article.subject);
+          }
+        } else {
+
+//          for(Article article : articles) {
+//            System.out.printf("%d | %s\n", article.id, article.subject);
+//          }
+
+          articles.forEach(
+              article ->
+                  System.out.printf("%d | %s\n", article.id, article.subject)
+          );
+        }
+
+        System.out.println("== 게시물 리스트 ==");
+
+
+      } else if (rq.getUrlPath().equals("/usr/article/detail")) {
+        if (articles.isEmpty()) {
+          System.out.println("게시물이 존재하지 않습니다.");
+          continue;
+        }
+
+        Map<String, String> params = rq.getParams();
+
+        if (!params.containsKey("id")) {
           System.out.println("id 값을 입력해주세요.");
           continue;
         }
@@ -80,7 +99,7 @@ public class Main {
         }
 
 
-        if(id > articles.size()) {
+        if (id > articles.size()) {
           System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
           continue;
         }
@@ -91,12 +110,10 @@ public class Main {
         System.out.printf("번호 : %d\n", article.id);
         System.out.printf("제목 : %s\n", article.subject);
         System.out.printf("내용 : %s\n", article.content);
-      }
-      else if(rq.getUrlPath().equals("exit")) {
+      } else if (rq.getUrlPath().equals("exit")) {
         System.out.println("== 게시판을 종료합니다. ==");
         break;
-      }
-      else {
+      } else {
         System.out.println("잘못 된 명령어입니다.");
       }
     }
@@ -147,16 +164,16 @@ class Util {
     Map<String, String> params = new LinkedHashMap<>();
     String[] urlBits = url.split("\\?", 2);
 
-    if(urlBits.length == 1) {
+    if (urlBits.length == 1) {
       return params;
     }
 
     String queryString = urlBits[1];
 
-    for(String bit : queryString.split("&")) {
+    for (String bit : queryString.split("&")) {
       String[] bits = bit.split("=");
 
-      if(bits.length == 1) {
+      if (bits.length == 1) {
         continue;
       }
 
