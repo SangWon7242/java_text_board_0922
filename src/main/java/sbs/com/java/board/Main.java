@@ -1,4 +1,4 @@
- package sbs.com.java.board;
+package sbs.com.java.board;
 
 import java.util.*;
 import java.util.stream.IntStream;
@@ -43,49 +43,7 @@ public class Main {
         System.out.println("등록 된 게시물 객체 : " + article);
         System.out.printf("%d번 게시물이 등록되었습니다.\n", article.id);
       } else if (rq.getUrlPath().equals("/usr/article/list")) {
-        if (articles.isEmpty()) {
-          System.out.println("게시물이 존재하지 않습니다.");
-          continue;
-        }
-
-        Map<String, String> params = rq.getParams();
-
-        // articles : 정렬, 필터링이 거치지 않은 원본 코드
-        List<Article> filteredArticles = articles;
-
-        if(params.containsKey("searchKeyword")) {
-          String searchKeyword = params.get("searchKeyword");
-
-          filteredArticles = new ArrayList<>();
-
-          for(Article article : articles) {
-            boolean matched = article.subject.contains(searchKeyword) || article.content.contains(searchKeyword);
-
-            if(matched) {
-              filteredArticles.add(article);
-            }
-          }
-
-        }
-
-        List<Article> sortedArticles = filteredArticles;
-
-        boolean orderByIdDesc = true;
-
-        if (params.containsKey("orderBy") && params.get("orderBy").equals("idAsc")) {
-          orderByIdDesc = false;
-        }
-
-        if (orderByIdDesc) {
-          sortedArticles = Util.reverseList(sortedArticles);
-        }
-
-        System.out.println("== 게시물 리스트 ==");
-
-        for (Article article : sortedArticles) {
-          System.out.printf("%d | %s\n", article.id, article.subject);
-        }
-
+        actionUsrArticleList(rq, articles);
       } else if (rq.getUrlPath().equals("/usr/article/detail")) {
         if (articles.isEmpty()) {
           System.out.println("게시물이 존재하지 않습니다.");
@@ -129,6 +87,50 @@ public class Main {
     }
 
     sc.close();
+  }
+
+  static void actionUsrArticleList(Rq rq, List<Article> articles) {
+    if (articles.isEmpty()) {
+      System.out.println("게시물이 존재하지 않습니다.");
+      return;
+    }
+
+    Map<String, String> params = rq.getParams();
+
+    // articles : 정렬, 필터링이 거치지 않은 원본 코드
+    List<Article> filteredArticles = articles;
+
+    if(params.containsKey("searchKeyword")) {
+      String searchKeyword = params.get("searchKeyword");
+
+      filteredArticles = new ArrayList<>();
+
+      for(Article article : articles) {
+        boolean matched = article.subject.contains(searchKeyword) || article.content.contains(searchKeyword);
+
+        if(matched) {
+          filteredArticles.add(article);
+        }
+      }
+    }
+
+    List<Article> sortedArticles = filteredArticles;
+
+    boolean orderByIdDesc = true;
+
+    if (params.containsKey("orderBy") && params.get("orderBy").equals("idAsc")) {
+      orderByIdDesc = false;
+    }
+
+    if (orderByIdDesc) {
+      sortedArticles = Util.reverseList(sortedArticles);
+    }
+
+    System.out.println("== 게시물 리스트 ==");
+
+    for (Article article : sortedArticles) {
+      System.out.printf("%d | %s\n", article.id, article.subject);
+    }
   }
 }
 
