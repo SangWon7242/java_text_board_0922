@@ -1,11 +1,11 @@
-package sbs.com.java.board;
+ package sbs.com.java.board;
 
 import java.util.*;
 import java.util.stream.IntStream;
 
 public class Main {
   static void makeTestData(List<Article> articles) {
-    IntStream.rangeClosed(1, 3)
+    IntStream.rangeClosed(1, 100)
         .forEach(i -> articles.add(new Article(i, "제목" + i, "내용" + i)));
   }
 
