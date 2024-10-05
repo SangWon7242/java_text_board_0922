@@ -33,6 +33,8 @@ public class Main {
         actionUsrArticleList(rq, articles);
       } else if (rq.getUrlPath().equals("/usr/article/detail")) {
         actionUsrArticleDetail(rq, articles);
+      } else if (rq.getUrlPath().equals("/usr/article/modify")) {
+        actionUsrArticleModify(sc, rq, articles);
       } else if (rq.getUrlPath().equals("exit")) {
         System.out.println("== 게시판을 종료합니다. ==");
         break;
@@ -42,6 +44,45 @@ public class Main {
     }
 
     sc.close();
+  }
+
+  private static void actionUsrArticleModify(Scanner sc, Rq rq, List<Article> articles) {
+    if (articles.isEmpty()) {
+      System.out.println("게시물이 존재하지 않습니다.");
+      return;
+    }
+
+    Map<String, String> params = rq.getParams();
+
+    if (!params.containsKey("id")) {
+      System.out.println("id 값을 입력해주세요.");
+      return;
+    }
+
+    int id = 0;
+
+    try {
+      id = Integer.parseInt(params.get("id"));
+    } catch (NumberFormatException e) {
+      System.out.println("id를 정수형태로 입력해주세요.");
+      return;
+    }
+
+    if (id > articles.size()) {
+      System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
+      return;
+    }
+
+    Article article = articles.get(id - 1);
+
+    System.out.println("== 게시물 수정 ==");
+    System.out.print("새 제목 : ");
+    article.subject = sc.nextLine();
+
+    System.out.print("새 내용 : ");
+    article.content = sc.nextLine();
+
+    System.out.printf("%d번 게시물이 수정되었습니다.\n", article.id);
   }
 
   private static void actionUsrArticleDetail(Rq rq, List<Article> articles) {
@@ -65,7 +106,6 @@ public class Main {
       System.out.println("id를 정수형태로 입력해주세요.");
       return;
     }
-
 
     if (id > articles.size()) {
       System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
