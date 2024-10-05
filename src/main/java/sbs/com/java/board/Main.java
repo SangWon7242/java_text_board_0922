@@ -50,7 +50,25 @@ public class Main {
 
         Map<String, String> params = rq.getParams();
 
-        List<Article> sortedArticles = articles;
+        // articles : 정렬, 필터링이 거치지 않은 원본 코드
+        List<Article> filteredArticles = articles;
+
+        if(params.containsKey("searchKeyword")) {
+          String searchKeyword = params.get("searchKeyword");
+
+          filteredArticles = new ArrayList<>();
+
+          for(Article article : articles) {
+            boolean matched = article.subject.contains(searchKeyword) || article.content.contains(searchKeyword);
+
+            if(matched) {
+              filteredArticles.add(article);
+            }
+          }
+
+        }
+
+        List<Article> sortedArticles = filteredArticles;
 
         boolean orderByIdDesc = true;
 
