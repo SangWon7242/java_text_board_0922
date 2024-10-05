@@ -1,5 +1,7 @@
 package sbs.com.java.board;
 
+import sbs.com.java.board.container.Container;
+
 import java.util.*;
 import java.util.stream.IntStream;
 
@@ -13,7 +15,7 @@ public class Main {
   }
 
   public static void main(String[] args) {
-    Scanner sc = new Scanner(System.in);
+    Scanner sc = Container.scanner;
     makeTestData();
 
     System.out.println("== 텍스트 게시판 ==");
@@ -26,13 +28,13 @@ public class Main {
       Rq rq = new Rq(cmd);
 
       if (rq.getUrlPath().equals("/usr/article/write")) {
-        actionUsrArticleWrite(sc);
+        actionUsrArticleWrite();
       } else if (rq.getUrlPath().equals("/usr/article/list")) {
         actionUsrArticleList(rq);
       } else if (rq.getUrlPath().equals("/usr/article/detail")) {
         actionUsrArticleDetail(rq);
       } else if (rq.getUrlPath().equals("/usr/article/modify")) {
-        actionUsrArticleModify(sc, rq);
+        actionUsrArticleModify(rq);
       } else if (rq.getUrlPath().equals("/usr/article/delete")) {
         actionUsrArticleDelete(rq);
       } else if (rq.getUrlPath().equals("exit")) {
@@ -80,7 +82,7 @@ public class Main {
     System.out.printf("%d번 게시물이 삭제되었습니다.\n", id);
   }
 
-  private static void actionUsrArticleModify(Scanner sc, Rq rq) {
+  private static void actionUsrArticleModify(Rq rq) {
     if (articles.isEmpty()) {
       System.out.println("게시물이 존재하지 않습니다.");
       return;
@@ -111,10 +113,10 @@ public class Main {
 
     System.out.println("== 게시물 수정 ==");
     System.out.print("새 제목 : ");
-    article.subject = sc.nextLine();
+    article.subject = Container.scanner.nextLine();
 
     System.out.print("새 내용 : ");
-    article.content = sc.nextLine();
+    article.content = Container.scanner.nextLine();
 
     System.out.printf("%d번 게시물이 수정되었습니다.\n", article.id);
   }
@@ -154,13 +156,13 @@ public class Main {
     System.out.printf("내용 : %s\n", article.content);
   }
 
-  private static void actionUsrArticleWrite(Scanner sc) {
+  private static void actionUsrArticleWrite() {
     System.out.println("== 게시물 작성 ==");
     System.out.print("제목 : ");
-    String subject = sc.nextLine();
+    String subject = Container.scanner.nextLine();
 
     System.out.print("내용 : ");
-    String content = sc.nextLine();
+    String content = Container.scanner.nextLine();
 
     lastArticleId = articles.get(articles.size() - 1).id;
 
