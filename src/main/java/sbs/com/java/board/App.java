@@ -1,5 +1,6 @@
 package sbs.com.java.board;
 
+import sbs.com.java.board.article.Article;
 import sbs.com.java.board.container.Container;
 
 import java.util.ArrayList;
