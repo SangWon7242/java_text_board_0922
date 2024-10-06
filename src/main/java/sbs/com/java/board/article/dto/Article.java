@@ -1,4 +1,4 @@
-package sbs.com.java.board.article;
+package sbs.com.java.board.article.dto;
 
 public class Article {
   public int id;
