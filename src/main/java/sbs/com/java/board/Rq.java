@@ -1,26 +1,22 @@
 package sbs.com.java.board;
 
+import lombok.Getter;
 import sbs.com.java.board.util.Util;
 
 import java.util.Map;
 
 public class Rq {
   private String url;
+  @Getter
   private Map<String, String> params;
+
+  @Getter
   private String urlPath;
 
   Rq(String url) {
     this.url = url;
     this.params = Util.getParamsFromUrl(url);
     this.urlPath = Util.getUrlPathFromUrl(url);
-  }
-
-  public Map<String, String> getParams() {
-    return params;
-  }
-
-  public String getUrlPath() {
-    return urlPath;
   }
 
   public String getParam(String paramName, String defaultValue) {

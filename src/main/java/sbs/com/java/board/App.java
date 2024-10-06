@@ -2,14 +2,17 @@ package sbs.com.java.board;
 
 import sbs.com.java.board.article.controller.ArticleController;
 import sbs.com.java.board.container.Container;
+import sbs.com.java.board.member.controller.MemberController;
 
 import java.util.Scanner;
 
 public class App {
   public ArticleController articleController;
+  public MemberController memberController;
 
   public App() {
     articleController = Container.articleController;
+    memberController = Container.memberController;
   }
 
   void run() {
@@ -34,6 +37,8 @@ public class App {
         articleController.doModify(rq);
       } else if (rq.getUrlPath().equals("/usr/article/delete")) {
         articleController.doDelete(rq);
+      } else if (rq.getUrlPath().equals("/usr/member/join")) {
+        memberController.doJoin();
       } else if (rq.getUrlPath().equals("exit")) {
         System.out.println("== 게시판을 종료합니다. ==");
         break;
