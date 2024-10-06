@@ -6,11 +6,13 @@ import sbs.com.java.board.article.service.ArticleService;
 import sbs.com.java.board.member.controller.MemberController;
 import sbs.com.java.board.member.repository.MemberRepository;
 import sbs.com.java.board.member.service.MemberService;
+import sbs.com.java.board.session.Session;
 
 import java.util.Scanner;
 
 public class Container {
   public static Scanner scanner;
+  public static Session session;
 
   public static MemberRepository memberRepository;
   public static ArticleRepository articleRepository;
@@ -23,6 +25,7 @@ public class Container {
 
   static {
     scanner = new Scanner(System.in);
+    session = new Session();
 
     memberRepository = new MemberRepository();
     articleRepository = new ArticleRepository();

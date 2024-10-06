@@ -1,5 +1,6 @@
 package sbs.com.java.board.member.controller;
 
+import sbs.com.java.board.Rq;
 import sbs.com.java.board.container.Container;
 import sbs.com.java.board.member.dto.Member;
 import sbs.com.java.board.member.service.MemberService;
@@ -91,7 +92,12 @@ public class MemberController {
     System.out.println("회원 가입 되었습니다.");
   }
 
-  public void doLogin() {
+  public void doLogin(Rq rq) {
+    if(rq.isLogined()) {
+      System.out.println("로그아웃 후 이용해주세요.");
+      return;
+    }
+
     String loginId;
     String loginPw;
     Member member;
@@ -149,7 +155,19 @@ public class MemberController {
     }
 
     if(isLoginSuccess) {
+      rq.setSessionAttr("loginedMember", member);
+
       System.out.printf("\"%s\"님 로그인 되었습니다.\n", member.getName());
     }
+  }
+
+  public void doLogout(Rq rq) {
+    if(rq.isLogout()) {
+      System.out.println("로그인 후 사용해주세요.");
+      return;
+    }
+
+    rq.removeSessionAttr("loginedMember");
+    System.out.println("로그아웃 되었습니다.");
   }
 }
