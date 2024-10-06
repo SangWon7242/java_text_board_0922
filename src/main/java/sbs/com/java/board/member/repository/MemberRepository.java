@@ -21,4 +21,14 @@ public class MemberRepository {
 
         members.add(member);
     }
+
+    public Member findByLoginId(String loginId) {
+        for(Member member : members) {
+            if(member.getLoginId().equals(loginId)) {
+                return member;
+            }
+        }
+
+        return null;
+    }
 }

@@ -1,6 +1,7 @@
 package sbs.com.java.board.member.controller;
 
 import sbs.com.java.board.container.Container;
+import sbs.com.java.board.member.dto.Member;
 import sbs.com.java.board.member.service.MemberService;
 
 import java.util.Scanner;
@@ -29,6 +30,13 @@ public class MemberController {
 
       if (loginId.trim().isEmpty()) {
         System.out.println("로그인 아이디를 입력해주세요.");
+        continue;
+      }
+
+      Member member = memberService.findByLoginId(loginId);
+
+      if(member != null) {
+        System.out.println("이미 가입 된 로그인 아이디입니다.");
         continue;
       }
 

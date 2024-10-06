@@ -1,6 +1,7 @@
 package sbs.com.java.board.member.service;
 
 import sbs.com.java.board.container.Container;
+import sbs.com.java.board.member.dto.Member;
 import sbs.com.java.board.member.repository.MemberRepository;
 
 import java.util.stream.IntStream;
@@ -21,5 +22,9 @@ public class MemberService {
 
     public void join(String loginId, String loginPw, String name) {
         memberRepository.join(loginId, loginPw, name);
+    }
+
+    public Member findByLoginId(String loginId) {
+        return memberRepository.findByLoginId(loginId);
     }
 }
