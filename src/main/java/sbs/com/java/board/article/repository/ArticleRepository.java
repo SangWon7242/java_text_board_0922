@@ -47,7 +47,7 @@ public class ArticleRepository {
       filteredArticles = new ArrayList<>();
 
       for (Article article : articles) {
-        boolean matched = article.subject.contains(searchKeyword) || article.content.contains(searchKeyword);
+        boolean matched = article.getSubject().contains(searchKeyword) || article.getContent().contains(searchKeyword);
 
         if (matched) {
           filteredArticles.add(article);
@@ -62,8 +62,8 @@ public class ArticleRepository {
     Article article = findByArticleId(id);
 
     if(article != null); {
-      article.subject = subject;
-      article.content = content;
+      article.setSubject(subject);
+      article.setContent(content);
     }
   }
 
@@ -77,7 +77,7 @@ public class ArticleRepository {
 
   public Article findByArticleId(int id) {
     for(Article article : articles) {
-      if(article.id == id) {
+      if(article.getId() == id) {
         return article;
       }
     }
