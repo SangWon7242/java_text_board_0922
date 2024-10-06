@@ -90,4 +90,66 @@ public class MemberController {
 
     System.out.println("회원 가입 되었습니다.");
   }
+
+  public void doLogin() {
+    String loginId;
+    String loginPw;
+    Member member;
+
+    boolean isLoginSuccess = true;
+
+    System.out.println("== 로그인 ==");
+
+    // 로그인 아이디
+    while (true) {
+      System.out.print("로그인 아이디 : ");
+      loginId = scanner.nextLine();
+
+      if (loginId.trim().isEmpty()) {
+        System.out.println("로그인 아이디를 입력해주세요.");
+        continue;
+      }
+
+      member = memberService.findByLoginId(loginId);
+
+      if(member == null) {
+        System.out.println("존재하지 않는 로그인 아이디입니다.");
+        continue;
+      }
+
+      break;
+    }
+
+    int pwMaxCount = 3;
+    int tryPwMaxCount = 0;
+
+    // 로그인 패스워드
+    while (true) {
+      if(tryPwMaxCount == pwMaxCount) {
+        System.out.println("비밀번호를 확인 후 다시 입력해주세요.");
+        isLoginSuccess = false;
+        break;
+      }
+
+      System.out.print("로그인 패스워드 : ");
+      loginPw = scanner.nextLine();
+
+      if(loginPw.trim().isEmpty()) {
+        System.out.println("비밀번호를 입력해주세요.");
+        continue;
+      }
+
+      if(!member.getPassword().equals(loginPw)) {
+        tryPwMaxCount++;
+        System.out.printf("비밀번호가 일치하지 않습니다. / 틀린 횟수(%d / %d)\n", tryPwMaxCount, pwMaxCount);
+        continue;
+      }
+
+      break;
+    }
+
+    if(isLoginSuccess) {
+      System.out.printf("\"%s\"님 로그인 되었습니다.\n", member.getName());
+    }
+  }
 }
